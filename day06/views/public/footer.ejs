@@ -1,0 +1,15 @@
+<footer class="text-center">
+    黑马程序员&nbsp;&copy;&nbsp;传智播客集团控股有限公司
+    <p>先下载express-session第三方模块，然后node中app.js里面引入express-session模块，配置session,</p>
+    <p>当用户登录成功之后,就可以设置req.session携带上他的用户信息</p>
+    <p>req.session.user=用户信息 req.session.isLogin=true</p>
+    <p><strong>同一个端口</strong>下当登录成功之后，会跳转到index页面，然后发送请求获取数据渲染页面，再次发送请求是时就携带了session信息</p>
+    <p>然后响应回浏览器，前端根据响应的session判断他是否登录</p>
+    <h1>入口文件是app.js里面启动了服务器，然后需要挂在路由(对应关系，就是一个<i>请求路径</i>对应一个回调函数一个功能)</h1>
+    <h1>然后路有里面的回调函数被抽离出来了，用一个专门的代码函数contallor封装，并暴露出来被路由文件引入执行对应的代码</h1>
+    <h1>然后代码执行连接输入库，执行增删改查所以有需要将连接数库的代码用单独的模块封装起来暴露出来被引用</h1>
+
+    <h1>还用到了时间模块的包功能  moment</h1>
+    <h1>还用到了加密的包功能  bcrypt.hash将用户输入的密码加密  bcrypt.compare将用户输入的密码和加密后的密码对比</h1>
+    <h1>还有就是编辑页面的makdir语法  将用户编辑的文章类容转换成mkdir语法的形式存储，然后展示出来的页面是字符串，也需要转换成html代码</h1>
+</footer>

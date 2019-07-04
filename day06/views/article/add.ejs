@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="../../node_modules/mditor/dist/css/mditor.css">
+    <script src="../../node_modules/jquery/dist/jquery.js"></script>
+    <script src="../../node_modules/mditor/dist/js/mditor.js"></script>
+    <script src="../../node_modules/bootstrap/dist/js/bootstrap.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- 公共模板头部 -->
+    <%- include("../public/header.ejs") %>
+    <div class="container">
+        <h1>文章显示栏</h1>
+        <hr>
+            <!-- <input type="text" data-authorid=> -->
+        <form id="form">
+            <div class="form-group">
+                <label for="">文章标题</label>
+                <input type="text" class="form-control" name="title" id="title">
+            </div>
+
+            <div class="form-group">
+                <label for="">文章类容</label>
+                <input type="text" class="form-control" name="content" id="editor">
+            </div>
+
+            <div class="form-group">
+                <input type="submit" class="btn btn-danger pull-right">
+            </div>
+        </form>
+    </div>
+
+
+    <!-- 公共模板底部 -->
+    <%- include("../public/footer.ejs") %>
+</body>
+
+<script>
+    
+    $(function () {
+        var mditor = Mditor.fromTextarea(document.getElementById('editor'));
+        $("#form").on("submit", () => {
+            event.preventDefault()
+            var title=$("#title").val()
+            var content=$("#editor").val()
+            console.log(title)
+            $.ajax({
+                url:"/article/addContent",
+                type:"post",
+                beforeSend:()=>{
+                    if(title.trim()=="" || content.trim()==""){
+                        alert("请输入完整类容")
+                        return false 
+                    }
+                },
+                data:{
+                    title,
+                    content
+                },
+                success:(res)=>{
+                    console.log(res)
+                    if(res.status!=200){
+                        alert(res.msg)
+                        return 
+                    }
+                    location.href="/article/addContent/"+res.data.insertId
+                }
+            })
+
+
+            // return false
+        })
+    })
+
+</script>
+
+</html>

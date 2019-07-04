@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.css">
+    <script src="../../node_modules/jquery/dist/jquery.js"></script>
+    <script src="../../node_modules/bootstrap/dist/js/bootstrap.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- 公共模板头部 -->
+    <%- include("../public/header.ejs") %>
+    <div class="container">
+
+        <h1 class="text-center"><%= data[0].title %>
+            <% if(isLogin){ %>
+            <a href="/article/add" class="btn btn-success pull-right">编辑</a>
+            <% } %>
+        </h1>
+
+        <hr>
+        <div><%- content%></div>
+        <!-- <input type="text" data-authorid=> -->
+
+    </div>
+
+
+    <!-- 公共模板底部 -->
+    <%- include("../public/footer.ejs") %>
+</body>
+
+</html>
