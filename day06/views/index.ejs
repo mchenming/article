@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
+    <script src="../node_modules/jquery/dist/jquery.js"></script>
+    <script src="../node_modules/twbs-pagination/jquery.twbsPagination.min.js"></script>
+    <script src="../node_modules/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="../node_modules/art-template/lib/template-web.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- 头部引入public公共模块 -->
+    <%- include("./public/header.ejs") %>
+    <!-- 头部结束 -->
+    <div class="container">
+        <h1>文章列表项</h1>
+        <ul class="list-group">
+            <!-- 页表渲染坑 -->
+        </ul>
+        <nav aria-label="Page navigation" class="center-block">
+            <ul class="pagination">
+
+            </ul>
+        </nav>
+    </div>
+
+    <!-- 底部公共模块 -->
+    <%- include("./public/footer.ejs") %>
+    <!-- 底部结束 -->
+</body>
+
+<script type="text/template" id="tempInfo">
+    {{each data}}
+        <li class="list-group-item">
+            <span class="badge" style="background-color:#f70">{{$value.ctime}}</span>
+            <span class="badge" style="background-color:skyblue">{{$value.nickname}}</span>
+            {{$value.title}}  
+        </li>
+    {{/each}}
+</script>
+
+<script>
+    $(function () {
+
+        // 首页的展示
+
+        // 当前所在的页面
+        var page = 1
+        // 获取每一页的数据条数
+        var pageSize = 10
+
+        getDate(page,pageSize)
+
+        // 封装好的获取请求数据信息的ajax请求
+        function getDate(page,pageSize) {
+            $.ajax({
+                url: "/article/list",
+                type: "post",
+                dataType: "json",
+                data: {
+                    page,
+                    pageSize
+                },
+                success: (res) => {
+                    console.log(res)
+                    // 根据数据库的查询获取页面的标题和  作者昵称和  提交的时间
+                    var html = template("tempInfo", res)
+                    // 将模板引擎渲染到页面  art-template
+                    $(".list-group").html(html)
+
+                    // 根据数据库查询的信息获取到的 总信息条数来设置所有分栏的条数
+                    var pageLength = Math.ceil(res.count / pageSize)
+                    console.log(pageLength)
+
+                    // 引入分栏模板 twbs-Pageination  npm i twbs-Pageination -S
+                    $('.pagination').twbsPagination({
+                        // 底下分栏的所有条数
+                        totalPages: pageLength,
+                        // 分栏显示的条数
+                        visiblePages: 5,
+                        // 点击后的回调函数
+                        onPageClick: function (event, page) {
+                            // 点击后获取的当前page页数
+                            console.log(page)
+                            // 外层的page是为了渲染第一个页面的，当点击底下  分栏按钮是page为对应的值
+                            // 传入不同的page值数据库渲染不同的数据     limit 
+                            getDate(page,pageSize)
+                        }
+                    });
+                }
+            })
+        }
+    })
+</script>
+
+</html>
